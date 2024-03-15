@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.25.0--rc1
-// source: userInfo.proto
+// source: userInfo/userInfo.proto
 
-package __
+package userInfo
 
 import (
 	context "context"
@@ -101,7 +101,7 @@ var CheckExistence_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "userInfo.proto",
+	Metadata: "userInfo/userInfo.proto",
 }
 
 // RegisterInfoClient is the client API for RegisterInfo service.
@@ -187,7 +187,7 @@ var RegisterInfo_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "userInfo.proto",
+	Metadata: "userInfo/userInfo.proto",
 }
 
 // LoginCheckClient is the client API for LoginCheck service.
@@ -273,5 +273,5 @@ var LoginCheck_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "userInfo.proto",
+	Metadata: "userInfo/userInfo.proto",
 }

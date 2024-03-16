@@ -22,7 +22,7 @@ message RegisterForm {
   string email = 1;
   string password = 2;
   string userName = 3;
-  string userID = 4;
+  int64 userID = 4;
 }
 
 message Success {

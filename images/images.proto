@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "images/";
+
+package TmagegRpcPKG;
+
+message TagRequest {
+  string tag = 1;
+}
+
+message FileItem {
+  string filename = 1;
+  string format = 2;
+}
+
+message FilesResponse {
+  repeated FileItem files = 1;
+}
+
+service FileService {
+  rpc GetFileListByTag (TagRequest) returns (FilesResponse);
+}

@@ -5,7 +5,7 @@ option go_package = "images/";
 package TmagegRpcPKG;
 
 message TagRequest {
-  string tag = 1;
+  repeated string tag = 1;
 }
 
 message FileItem {

@@ -18,86 +18,172 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// FileServiceClient is the client API for FileService service.
+// SearchServiceClient is the client API for SearchService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type FileServiceClient interface {
-	GetFileListByTag(ctx context.Context, in *TagRequest, opts ...grpc.CallOption) (*FilesResponse, error)
+type SearchServiceClient interface {
+	SendTags(ctx context.Context, in *SearchByTags, opts ...grpc.CallOption) (*SearchResponse, error)
 }
 
-type fileServiceClient struct {
+type searchServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewFileServiceClient(cc grpc.ClientConnInterface) FileServiceClient {
-	return &fileServiceClient{cc}
+func NewSearchServiceClient(cc grpc.ClientConnInterface) SearchServiceClient {
+	return &searchServiceClient{cc}
 }
 
-func (c *fileServiceClient) GetFileListByTag(ctx context.Context, in *TagRequest, opts ...grpc.CallOption) (*FilesResponse, error) {
-	out := new(FilesResponse)
-	err := c.cc.Invoke(ctx, "/TmagegRpcPKG.FileService/GetFileListByTag", in, out, opts...)
+func (c *searchServiceClient) SendTags(ctx context.Context, in *SearchByTags, opts ...grpc.CallOption) (*SearchResponse, error) {
+	out := new(SearchResponse)
+	err := c.cc.Invoke(ctx, "/TmagegRpcPKG.SearchService/SendTags", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// FileServiceServer is the server API for FileService service.
-// All implementations must embed UnimplementedFileServiceServer
+// SearchServiceServer is the server API for SearchService service.
+// All implementations must embed UnimplementedSearchServiceServer
 // for forward compatibility
-type FileServiceServer interface {
-	GetFileListByTag(context.Context, *TagRequest) (*FilesResponse, error)
-	mustEmbedUnimplementedFileServiceServer()
+type SearchServiceServer interface {
+	SendTags(context.Context, *SearchByTags) (*SearchResponse, error)
+	mustEmbedUnimplementedSearchServiceServer()
 }
 
-// UnimplementedFileServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedFileServiceServer struct {
+// UnimplementedSearchServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSearchServiceServer struct {
 }
 
-func (UnimplementedFileServiceServer) GetFileListByTag(context.Context, *TagRequest) (*FilesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFileListByTag not implemented")
+func (UnimplementedSearchServiceServer) SendTags(context.Context, *SearchByTags) (*SearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendTags not implemented")
 }
-func (UnimplementedFileServiceServer) mustEmbedUnimplementedFileServiceServer() {}
+func (UnimplementedSearchServiceServer) mustEmbedUnimplementedSearchServiceServer() {}
 
-// UnsafeFileServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to FileServiceServer will
+// UnsafeSearchServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SearchServiceServer will
 // result in compilation errors.
-type UnsafeFileServiceServer interface {
-	mustEmbedUnimplementedFileServiceServer()
+type UnsafeSearchServiceServer interface {
+	mustEmbedUnimplementedSearchServiceServer()
 }
 
-func RegisterFileServiceServer(s grpc.ServiceRegistrar, srv FileServiceServer) {
-	s.RegisterService(&FileService_ServiceDesc, srv)
+func RegisterSearchServiceServer(s grpc.ServiceRegistrar, srv SearchServiceServer) {
+	s.RegisterService(&SearchService_ServiceDesc, srv)
 }
 
-func _FileService_GetFileListByTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TagRequest)
+func _SearchService_SendTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchByTags)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileServiceServer).GetFileListByTag(ctx, in)
+		return srv.(SearchServiceServer).SendTags(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/TmagegRpcPKG.FileService/GetFileListByTag",
+		FullMethod: "/TmagegRpcPKG.SearchService/SendTags",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileServiceServer).GetFileListByTag(ctx, req.(*TagRequest))
+		return srv.(SearchServiceServer).SendTags(ctx, req.(*SearchByTags))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// FileService_ServiceDesc is the grpc.ServiceDesc for FileService service.
+// SearchService_ServiceDesc is the grpc.ServiceDesc for SearchService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var FileService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "TmagegRpcPKG.FileService",
-	HandlerType: (*FileServiceServer)(nil),
+var SearchService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "TmagegRpcPKG.SearchService",
+	HandlerType: (*SearchServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetFileListByTag",
-			Handler:    _FileService_GetFileListByTag_Handler,
+			MethodName: "SendTags",
+			Handler:    _SearchService_SendTags_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "images/images.proto",
+}
+
+// UploadServiceClient is the client API for UploadService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type UploadServiceClient interface {
+	SendFile(ctx context.Context, in *UploadFileData, opts ...grpc.CallOption) (*UploadResponse, error)
+}
+
+type uploadServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewUploadServiceClient(cc grpc.ClientConnInterface) UploadServiceClient {
+	return &uploadServiceClient{cc}
+}
+
+func (c *uploadServiceClient) SendFile(ctx context.Context, in *UploadFileData, opts ...grpc.CallOption) (*UploadResponse, error) {
+	out := new(UploadResponse)
+	err := c.cc.Invoke(ctx, "/TmagegRpcPKG.UploadService/SendFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// UploadServiceServer is the server API for UploadService service.
+// All implementations must embed UnimplementedUploadServiceServer
+// for forward compatibility
+type UploadServiceServer interface {
+	SendFile(context.Context, *UploadFileData) (*UploadResponse, error)
+	mustEmbedUnimplementedUploadServiceServer()
+}
+
+// UnimplementedUploadServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedUploadServiceServer struct {
+}
+
+func (UnimplementedUploadServiceServer) SendFile(context.Context, *UploadFileData) (*UploadResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendFile not implemented")
+}
+func (UnimplementedUploadServiceServer) mustEmbedUnimplementedUploadServiceServer() {}
+
+// UnsafeUploadServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UploadServiceServer will
+// result in compilation errors.
+type UnsafeUploadServiceServer interface {
+	mustEmbedUnimplementedUploadServiceServer()
+}
+
+func RegisterUploadServiceServer(s grpc.ServiceRegistrar, srv UploadServiceServer) {
+	s.RegisterService(&UploadService_ServiceDesc, srv)
+}
+
+func _UploadService_SendFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UploadFileData)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UploadServiceServer).SendFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/TmagegRpcPKG.UploadService/SendFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UploadServiceServer).SendFile(ctx, req.(*UploadFileData))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// UploadService_ServiceDesc is the grpc.ServiceDesc for UploadService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var UploadService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "TmagegRpcPKG.UploadService",
+	HandlerType: (*UploadServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SendFile",
+			Handler:    _UploadService_SendFile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

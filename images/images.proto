@@ -4,19 +4,36 @@ option go_package = "images/";
 
 package TmagegRpcPKG;
 
-message TagRequest {
+message SearchByTags {
   repeated string tag = 1;
 }
 
-message FileItem {
+message ResultItem {
   string filename = 1;
   string format = 2;
+  bytes fileContent = 3;
 }
 
-message FilesResponse {
-  repeated FileItem files = 1;
+message SearchResponse {
+  repeated ResultItem files = 1;
 }
 
-service FileService {
-  rpc GetFileListByTag (TagRequest) returns (FilesResponse);
+service SearchService {
+  rpc SendTags (SearchByTags) returns (SearchResponse);
+}
+
+message UploadFileData {
+  string userId = 1;
+  repeated string tags = 2;
+  string filename = 3;
+  string fileType = 4;
+  bytes fileContent = 5;
+}
+
+message UploadResponse {
+  int64 info = 1;
+}
+
+service UploadService {
+  rpc SendFile(UploadFileData) returns (UploadResponse);
 }
